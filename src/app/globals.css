@@ -1,0 +1,294 @@
+@font-face {
+  font-family: "New Grotesk";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/new-grotesk-400.woff") format("woff");
+}
+
+@font-face {
+  font-family: "New Grotesk";
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("/fonts/new-grotesk-500.woff") format("woff");
+}
+
+@font-face {
+  font-family: "New Grotesk";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/new-grotesk-500.woff") format("woff");
+}
+
+:root {
+  --cs-bg: #f1f1f1;
+  --cs-ink: #000000;
+  --font-ui: "New Grotesk", system-ui, sans-serif;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--cs-bg);
+  color: var(--cs-ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.cs {
+  position: relative;
+  min-height: 100dvh;
+  min-height: 100svh;
+  width: 100%;
+  background: var(--cs-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: var(--safe-t);
+  padding-bottom: var(--safe-b);
+}
+
+.cs-main {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/* Exact Figma Blossom wordmark (composited from 12:104) */
+.cs-wordmark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  opacity: 0;
+  animation: cs-fade-in 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.04s forwards;
+}
+
+.cs-wordmark-img {
+  width: min(92vw, 78vh, 1200px);
+  height: auto;
+  max-height: 82%;
+  object-fit: contain;
+  transform: translateY(-2.5vh);
+}
+
+@keyframes cs-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Film strip — Figma 12:104 (cards 669×318, gap 54, on 4096 stage) */
+.cs-reel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 4%,
+    #000 96%,
+    transparent 100%
+  );
+}
+
+.cs-track {
+  display: flex;
+  width: max-content;
+  gap: max(10px, 1.318vw); /* 54 / 4096 */
+  will-change: transform;
+  animation: cs-film 36s linear infinite;
+}
+
+.cs-card {
+  position: relative;
+  flex: none;
+  /* 669 / 4096 */
+  width: clamp(200px, 16.33vw, 669px);
+  aspect-ratio: 669 / 318;
+  border-radius: clamp(18px, 0.95vw, 39px);
+  overflow: hidden;
+  background: #e4e4e4;
+  opacity: 0;
+  animation: cs-card-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cs-card-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cs-card-mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.cs-card-mark img {
+  /* 116 / 669 ≈ 17.3% of card */
+  width: 17.3%;
+  height: auto;
+  display: block;
+}
+
+@keyframes cs-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cs-film {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Figma “Launching Soon” — 60px on 4096 stage */
+.cs-soon {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  margin: 0;
+  padding: clamp(8px, 1.2vh, 16px) 16px clamp(16px, 3.5vh, 40px);
+  text-align: center;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(0.7rem, 1.465vw, 1.35rem); /* 60 / 4096 */
+  line-height: 1.2;
+  color: var(--cs-ink);
+  font-variant-ligatures: none;
+  white-space: pre;
+  min-height: 1.4em;
+  animation: cs-soon-in 0.45s ease 0.35s both;
+}
+
+.cs-soon span {
+  display: inline-block;
+  min-width: 14ch;
+}
+
+@keyframes cs-soon-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Phone — keep Figma proportions, slightly larger for readability */
+@media (max-width: 640px) {
+  .cs-wordmark-img {
+    width: min(118vw, 100%);
+    max-height: 58%;
+    transform: translateY(-1vh);
+  }
+
+  .cs-track {
+    gap: 10px;
+    animation-duration: 28s;
+  }
+
+  .cs-card {
+    width: min(70vw, 280px);
+    border-radius: 20px;
+  }
+
+  .cs-reel {
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 3%,
+      #000 97%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 3%,
+      #000 97%,
+      transparent 100%
+    );
+  }
+
+  .cs-soon {
+    font-size: 0.8125rem;
+    padding: 10px 12px calc(16px + var(--safe-b));
+  }
+}
+
+@media (max-height: 520px) {
+  .cs-wordmark-img {
+    max-height: 70%;
+    width: min(55vh, 70vw);
+    transform: none;
+  }
+
+  .cs-card {
+    width: min(38vw, 220px);
+  }
+
+  .cs-soon {
+    padding: 6px 12px 10px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-track {
+    animation: none;
+  }
+
+  .cs-wordmark,
+  .cs-card,
+  .cs-soon {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
